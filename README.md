@@ -1,4 +1,4 @@
-# Computa-o_Gr-fica
+# Computação_Gráfica
 Alguns trabalhos feitos durante o aprendizado de computação gráfica, utilizando THREE.JS.
 
 A computação gráfica é um campo da informática que se dedica à geração, manipulação e exibição de imagens e vídeos através do uso de computadores. Envolve o desenvolvimento de algoritmos e técnicas para criar e processar imagens digitais, animações, modelagem 3D e efeitos visuais.

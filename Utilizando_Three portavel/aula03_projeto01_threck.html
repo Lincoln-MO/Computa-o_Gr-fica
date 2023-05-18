@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Define o tipo de documento -->
+    <meta charset="utf-8">
+    <!-- Define o título da página -->
+    <title>Three.js Exemplo</title>
+    <style>
+      /* Define o estilo da página HTML */
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+    <!-- Inclui a biblioteca Three.js -->
+    <script src="three/build/three.js"></script>
+    <script src="trackball_controls.js"></script>
+    </head>
+  <body>
+    <script>
+      // Cria a cena Three.js
+      var scene = new THREE.Scene();
+      // Cria a câmera Three.js com visão perspectiva
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+      // Cria o renderizador Three.js com suporte a WebGL
+      var renderer = new THREE.WebGLRenderer();
+      // Define o tamanho do renderizador para o tamanho da janela do navegador
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      // Adiciona o elemento DOM do renderizador à página HTML
+      document.body.appendChild(renderer.domElement);
+      // Cria a geometria Three.js para o objeto mesh
+      const geometry2 = new THREE.SphereGeometry( 1, 32,12 );
+      // Cria o material Three.js para o objeto mesh
+      const material2 = new THREE.MeshBasicMaterial( { color: 0x00ff00 , wireframe: true } );
+      // Cria o objeto mesh Three.js com a geometria e o material definidos
+      const sphere = new THREE.Mesh( geometry2, material2 );
+      // Adiciona o objeto mesh à cena Three.js
+      scene.add( sphere );
+      //adiciona eixos x , y e z
+      const axesHelper = new THREE.AxesHelper( 5 );
+      scene.add( axesHelper );
+      // Define a posição da câmera Three.js
+      camera.position.z = 5;
+      // Cria os controles de trackball e os vincula à câmera
+      var controls = new THREE.TrackballControls(camera, renderer.domElement);
+      // Define algumas opções de controle de trackball
+      controls.rotateSpeed = 1.0;
+      controls.zoomSpeed = 1.2;
+      controls.panSpeed = 0.8;
+
+      // Habilita o movimento do zoom do mouse
+      controls.noZoom = false;
+      controls.noPan = false;
+
+      // Limita o ângulo de rotação verticalmente (em radianos)
+      controls.minPolarAngle = 0; // em radianos
+      controls.maxPolarAngle = Math.PI; // em radianos
+      // Define o loop de animação Three.js
+      function animate() {
+        // Solicita a atualização da animação na próxima renderização do navegador
+        requestAnimationFrame(animate);
+        // Atualiza a posição e a rotação do objeto mesh
+        sphere.rotation.x += 0.01;
+        sphere.rotation.y += 0.01;
+        //
+        controls.update();
+        // Renderiza a cena Three.js com a câmera definida
+        renderer.render(scene, camera);
+        
+      }
+      // Inicia a animação
+      animate();
+    </script>
+  </body>
+</html>

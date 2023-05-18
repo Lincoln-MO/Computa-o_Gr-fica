@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Define o tipo de documento -->
+    <meta charset="utf-8">
+    <!-- Define o título da página -->
+    <title>Three.js Exemplo</title>
+    <style>
+      /* Define o estilo da página HTML */
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+    <!-- Inclui a biblioteca Three.js -->
+    <script src="three/build/three.js"></script>
+  </head>
+  <body>
+    <script>
+      // Cria a cena Three.js
+      var scene = new THREE.Scene();
+      // Cria a câmera Three.js com visão perspectiva
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 0, 10);
+      // Cria o renderizador Three.js com suporte a WebGL
+      var renderer = new THREE.WebGLRenderer();
+      // Define o tamanho do renderizador para o tamanho da janela do navegador
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      // Adiciona o elemento DOM do renderizador à página HTML
+      document.body.appendChild(renderer.domElement);
+      // Cria a geometria Three.js para o objeto mesh
+      const geometry2 = new THREE.PlaneGeometry( 2, 2 );
+      const geometry1 = new THREE.SphereGeometry( 2, 32,12 );  //Sol
+       // Textura
+      const texture = new THREE.TextureLoader().load( "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2bb01696-1897-479c-a311-d4adceeef098/d5v1bdp-b6bd491b-6e7a-4f26-ae51-1a30c19f2445.png/v1/fill/w_1024,h_521,q_75,strp/map_of_planet_new_earth_by_ohara_356011-d5v1bdp.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl0sIm9iaiI6W1t7InBhdGgiOiIvZi8yYmIwMTY5Ni0xODk3LTQ3OWMtYTMxMS1kNGFkY2VlZWYwOTgvZDV2MWJkcC1iNmJkNDkxYi02ZTdhLTRmMjYtYWU1MS0xYTMwYzE5ZjI0NDUucG5nIiwid2lkdGgiOiI8PTEwMjQiLCJoZWlnaHQiOiI8PTUyMSJ9XV19.byXOrGF7jni-prJv3y8PZ9pQZBIcWURpXLr3OyosWD4" );
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set( 1, 1 );
+      // Cria o material Three.js para o objeto mesh
+      const material2 = new THREE.MeshBasicMaterial( { map: texture , side: THREE.DoubleSide} );
+      const material1 = new THREE.MeshBasicMaterial( { color: 0xf2dc23} );
+      // Cria o objeto mesh Three.js com a geometria e o material definidos
+      const sphere = new THREE.Mesh( geometry2, material2 );
+      const sphere1 = new THREE.Mesh( geometry1, material1 );
+      // Adiciona o objeto mesh à cena Three.js
+      scene.add( sphere );
+      scene.add( sphere1 );
+      //adiciona eixos x , y e z
+      const axesHelper = new THREE.AxesHelper( 5 );
+      scene.add( axesHelper );
+      // Define a posição da câmera Three.js
+      //camera.position.z = 10;
+      // Define o loop de animação Three.js
+      var radius = 5;
+      var angle = 0;
+      sphere.position.x = radius * Math.cos(angle);
+      sphere.position.z = radius * Math.sin(angle);
+      sphere.rotation.x += 90;
+      
+      function animate() {
+        // Solicita a atualização da animação na próxima renderização do navegador
+        requestAnimationFrame(animate);
+        angle += 0.02;
+        // Atualiza a posição e a rotação do objeto mesh
+        //sphere.rotation.x += 0.01; 
+        sphere.position.x = radius * Math.cos(angle);
+        sphere.position.z = radius * Math.sin(angle);
+        sphere.rotation.y += 0.01; 
+        // Renderiza a cena Three.js com a câmera definida
+        renderer.render(scene, camera);
+      }
+      // Inicia a animação
+      animate();
+    </script>
+  </body>
+</html>

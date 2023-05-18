@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Define o tipo de documento -->
+    <meta charset="utf-8">
+    <!-- Define o título da página -->
+    <title>Three.js Exemplo</title>
+    <style>
+      /* Define o estilo da página HTML */
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+    <!-- Inclui a biblioteca Three.js -->
+    <script src="three/build/three.js"></script>
+  </head>
+  <body>
+    <script>
+      // Cria a cena Three.js
+      var scene = new THREE.Scene();
+
+      // Cria a câmera Three.js
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 7;
+
+      // Cria o renderizador Three.js
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Define a geometria da pirâmide
+      var geometry = new THREE.ConeGeometry(1, 2, 4);
+
+      // Define o material da pirâmide
+      var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+      // Cria o objeto mesh com a geometria e o material correspondentes
+      var mesh = new THREE.Mesh(geometry, material);
+
+      // Adiciona o objeto à cena
+      scene.add(mesh);
+
+      // Define o intervalo de escala da pirâmide
+      var minScale = 0.5;
+      var maxScale = 2;
+
+      // Define a velocidade da animação
+      var animationSpeed = 0.01;
+
+      // Define a função de atualização de quadro para a animação
+      function update() {
+        requestAnimationFrame(update);
+
+        // Atualiza o valor da escala
+        mesh.scale.setScalar(minScale + (maxScale - minScale) * (1 + Math.sin(Date.now() * animationSpeed)));
+
+        // Renderiza o frame
+        renderer.render(scene, camera);
+      }
+
+      // Inicia a renderização da cena
+      update();
+    </script>
+  </body>
+</html>

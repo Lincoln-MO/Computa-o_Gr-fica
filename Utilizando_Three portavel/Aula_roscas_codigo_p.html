@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <meta charset="utf-8">
+
+        <title>Tá chovendo Donut</title>
+
+        <style>
+
+            body { margin: 0; }
+
+        </style>
+
+        <!-- Inclui a biblioteca Three.js -->
+
+        <script src="three/build/three.js"></script>
+
+    </head>
+
+    <body>
+
+        <script type="module">
+
+            // Declaração de variáveis globais
+
+            var renderer, scene, camera;
+
+            // Função para inicializar a cena, a câmera e o renderizador
+
+            function init(){
+
+                scene = new THREE.Scene();
+
+                camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+
+                renderer = new THREE.WebGLRenderer();
+
+                renderer.setSize( window.innerWidth, window.innerHeight );
+
+                document.body.appendChild( renderer.domElement );
+
+                camera.position.z = 5;
+
+
+                // Adiciona um helper de eixos à cena
+
+                const axesHelper = new THREE.AxesHelper(10);
+
+                scene.add(axesHelper);
+
+            }
+
+            init();
+
+
+            // Vetor para armazenar os donuts criados
+
+            const donuts = [];
+
+
+            // Função para criar um donut e adicioná-lo à cena
+
+            function createDonut(){
+
+                const geometry = new THREE.TorusGeometry(1, 0.5, 10, 40);
+
+                const material = new THREE.MeshBasicMaterial({
+
+                    color: Math.random() * 0xffffff
+
+                });
+
+
+                const d = new THREE.Mesh( geometry, material );
+
+
+                // Posiciona o donut aleatoriamente no espaço
+
+                d.position.x = (Math.random() * 20) - 10; //-10 a 10
+
+                d.position.z = (Math.random() * 20) - 10;
+
+                d.position.y = (Math.random() * 20) - 10;
+
+                scene.add(d);
+
+                donuts.push(d);
+
+            }
+
+
+            // Função para animar a cena e renderizá-la
+
+            function animate() {
+
+                requestAnimationFrame(animate);
+
+                let x = Math.random();
+
+
+                // Cria um novo donut com 50% de probabilidade a cada quadro
+
+                if(x < 0.5)
+
+                    createDonut();
+
+
+                // Atualiza a rotação e a posição vertical de cada donut
+
+                donuts.forEach((d) => {
+
+                    d.rotation.x += 0.01;
+
+                    d.rotation.y += 0.01;
+
+                    d.rotation.z += 0.01;
+
+                    d.position.y -= 0.1;
+
+                });
+
+
+                // Renderiza a cena com a câmera atual
+
+                renderer.render(scene, camera);
+
+            };
+
+
+            // Inicia a animação
+
+            animate();
+
+        </script>
+
+    </body>
+
+</html>

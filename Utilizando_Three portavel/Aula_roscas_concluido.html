@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Define o tipo de documento -->
+    <meta charset="utf-8">
+    <!-- Define o título da página -->
+    <title>Three.js Exemplo</title>
+    <style>
+      /* Define o estilo da página HTML */
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+    <!-- Inclui a biblioteca Three.js -->
+    <script src="three/build/three.js"></script>
+  </head>
+  <body>
+    <script>
+      // Configuração básica da cena
+// Configuração básica da cena
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Adiciona uma luz ambiente
+var ambientLight = new THREE.AmbientLight(0xffffff);
+scene.add(ambientLight);
+
+// Adiciona uma luz direcional
+var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(0, 1, 1);
+scene.add(directionalLight);
+
+// Cria uma geometria para o donut
+var donutGeometry = new THREE.TorusGeometry(1, 0.5, 16, 100);
+
+// Cria um grupo para armazenar todos os donuts
+var donutGroup = new THREE.Group();
+
+// Cria um número de donuts
+var numDonuts = 100;
+for (var i = 0; i < numDonuts; i++) {
+  // Cria um material com uma cor aleatória
+  var donutMaterial = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff, wireframe: false });  //Randomiza as corres do donut
+
+  // Cria uma malha do donut usando a geometria e o material criados acima
+  var donutMesh = new THREE.Mesh(donutGeometry, donutMaterial);
+
+  // Define a posição inicial do donut
+  donutMesh.position.set(Math.random() * 20 - 10, Math.random() * 20, Math.random() * 20 - 10);
+
+  // Adiciona o donut ao grupo
+  donutGroup.add(donutMesh);
+}
+
+// Adiciona o grupo de donuts à cena
+scene.add(donutGroup);
+
+// Função para animar os donuts
+function animateDonuts() {
+  // Move cada donut para baixo
+  donutGroup.children.forEach(function(donut) {
+    donut.position.y -= 0.1;
+
+    // Verifica se o donut caiu abaixo da cena e o reposiciona acima
+    if (donut.position.y < -10) {
+      donut.position.y = 20;
+    }
+  });
+
+  // Renderiza a cena
+  renderer.render(scene, camera);
+
+  // Chama a função de animação novamente
+  requestAnimationFrame(animateDonuts);
+}
+
+// Chama a função de animação pela primeira vez
+animateDonuts();
+
+    </script>
+  </body>
+</html>

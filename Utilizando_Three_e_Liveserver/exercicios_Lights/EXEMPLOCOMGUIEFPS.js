@@ -93,10 +93,10 @@ scene.add( sphere );
 
 //Adiciona o primeiro SpotLight 01 vermelho
 const spotlightvermelho = new THREE.SpotLight(0xff0000); // Cor da luz (vermelho)
-spotlightvermelho.position.set(5, 5, 5); // Posição da luz
+spotlightvermelho.position.set(6, 6, 6); // Posição da luz
 scene.add(spotlightvermelho);
 
-spotlightvermelho.target.position.set(3, 3, 3); // Posição do alvo do holofote
+spotlightvermelho.target.position.set(0, 0, 0); // Posição do alvo do holofote
 scene.add(spotlightvermelho.target);
 spotlightvermelho.target.updateMatrixWorld(); // Atualiza a matriz do mundo do alvo
 spotlightvermelho.target.updateWorldMatrix(true, false); // Atualiza a matriz mundial do alvo
@@ -105,16 +105,16 @@ spotlightvermelho.target.matrixWorldNeedsUpdate = true; // Marca a matriz mundia
 spotlightvermelho.target.updateMatrixWorld(true); // Atualiza a matriz mundial do alvo
 spotlightvermelho.angle = Math.PI / 4; // Ângulo do holofote (em radianos)
 spotlightvermelho.penumbra = 0.05; // Suavidade das bordas do holofote (0 - 1)
-spotlightvermelho.distance = 20; // Distância máxima da luz
+spotlightvermelho.distance = 50; // Distância máxima da luz
 spotlightvermelho.intensity = 1; // Intensidade da luz (0 - 1)
 spotlightvermelho.castShadow = true; // Habilita o sombreamento produzido pelo holofote
 
 //Adiciona o segundo SpotLight 02 azul
 const spotlightazul = new THREE.SpotLight(0x0000ff); // Cor da luz (azul)
-spotlightazul.position.set(-5, -5, 5); // Posição da luz
+spotlightazul.position.set(0, -20, 6); // Posição da luz
 scene.add(spotlightazul);
 
-spotlightazul.target.position.set(-3, -3, 3); // Posição do alvo do holofote
+spotlightazul.target.position.set(0, 0, 0); // Posição do alvo do holofote
 scene.add(spotlightazul.target);
 spotlightazul.target.updateMatrixWorld(); // Atualiza a matriz do mundo do alvo
 spotlightazul.target.updateWorldMatrix(true, false); // Atualiza a matriz mundial do alvo
@@ -123,16 +123,16 @@ spotlightazul.target.matrixWorldNeedsUpdate = true; // Marca a matriz mundial do
 spotlightazul.target.updateMatrixWorld(true); // Atualiza a matriz mundial do alvo
 spotlightazul.angle = Math.PI / 4; // Ângulo do holofote (em radianos)
 spotlightazul.penumbra = 0.05; // Suavidade das bordas do holofote (0 - 1)
-spotlightazul.distance = 20; // Distância máxima da luz
+spotlightazul.distance = 50; // Distância máxima da luz
 spotlightazul.intensity = 1; // Intensidade da luz (0 - 1)
 spotlightazul.castShadow = true; // Habilita o sombreamento produzido pelo holofote
 
 //Adiciona o segundo SpotLight 03 verde
 const spotlightverde = new THREE.SpotLight(0x00ff00); // Cor da luz (verde)
-spotlightverde.position.set(3,3, 10); // Posição da luz
+spotlightverde.position.set(6, 0, 10); // Posição da luz
 scene.add(spotlightverde);
 
-spotlightverde.target.position.set(-1, -1, 1); // Posição do alvo do holofote
+spotlightverde.target.position.set(0, 0, 0); // Posição do alvo do holofote
 scene.add(spotlightverde.target);
 spotlightverde.target.updateMatrixWorld(); // Atualiza a matriz do mundo do alvo
 spotlightverde.target.updateWorldMatrix(true, false); // Atualiza a matriz mundial do alvo
@@ -141,7 +141,7 @@ spotlightverde.target.matrixWorldNeedsUpdate = true; // Marca a matriz mundial d
 spotlightverde.target.updateMatrixWorld(true); // Atualiza a matriz mundial do alvo
 spotlightverde.angle = Math.PI / 4; // Ângulo do holofote (em radianos)
 spotlightverde.penumbra = 0.05; // Suavidade das bordas do holofote (0 - 1)
-spotlightverde.distance = 20; // Distância máxima da luz
+spotlightverde.distance = 50; // Distância máxima da luz
 spotlightverde.intensity = 1; // Intensidade da luz (0 - 1)
 spotlightverde.castShadow = true; // Habilita o sombreamento produzido pelo holofote
 
@@ -195,8 +195,24 @@ stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild(stats.dom);
 
 //mover as luzes
-var radius = 1;
+var radius = 0.1;
 var angle = 0;
+
+//para fazer os spotlights apagarem 
+var spotlightIntensityOn = 1;
+var spotlightIntensityOff = 0;
+// Variáveis de controle
+ var isOn = true;
+ var intervalDuration = 500; // 500 milissegundos (0.5 segundos)
+ var lastToggleTime = Date.now();
+
+// Função para alternar estado do spotlight
+function toggleSpotlight() {
+    isOn = !isOn;
+    spotlightvermelho.intensity = isOn ? spotlightIntensityOn : spotlightIntensityOff;
+    spotlightverde.intensity = isOn ? spotlightIntensityOn : spotlightIntensityOff;
+    spotlightazul.intensity = isOn ? spotlightIntensityOn : spotlightIntensityOff;
+}
 
 // Animate function
 
@@ -233,21 +249,27 @@ function animate() {
   angle += 1/20;
   spotlightvermelho.position.x += radius * Math.cos(angle);
   spotlightvermelho.position.y += radius * Math.sin(angle);
-  spotlightazul.position.x += radius * Math.cos(angle);
+  spotlightazul.position.z += radius * Math.cos(angle);
   spotlightazul.position.y += radius * Math.sin(angle);
   spotlightverde.position.x += radius * Math.cos(angle);
-  spotlightverde.position.y += radius * Math.sin(angle);
+  spotlightverde.position.z += radius * Math.sin(angle);
 
   //spotlightvermelho.rotation.x += radius * Math.cos(angle);
   //spotlightvermelho.rotation.y += radius * Math.cos(angle);
-  renderer.render(scene, currentCamera);
 
+  renderer.render(scene, currentCamera);
 
   // End FPS counter update
 
   stats.end();
 
-}
+  // Verificar intervalo de tempo para piscar
+  var currentTime = Date.now();
+  if (currentTime - lastToggleTime >= intervalDuration) {
+    toggleSpotlight();
+    lastToggleTime = currentTime;
+  }
 
+}
 
 animate();

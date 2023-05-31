@@ -1,0 +1,2 @@
+Programinha para poder gerar o Normal Map e o Displacement Map de uma imagem: https://cpetry.github.io/NormalMap-Online/ 
+OBS: o Bump Map eu vou ficar devendo.
